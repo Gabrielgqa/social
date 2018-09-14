@@ -16,4 +16,35 @@ module.exports = {
             next()            
         })
     },
+
+    create: (req, res, next) => {
+        let { text, title, likes, description } = req.body
+        if (req.files.image) {
+            cloudinary.uploader.upload(req.files.image.path, (result) => {
+                let obj = { text, title, likes, description, image: result.url != null ? result.url : '' }
+                saveArticle(obj)
+            },{
+                resource_type: 'image',
+                eager: [
+                    {effect: 'sepia'}
+                ]
+            })
+        }else {
+            saveArticle({ text, title, likes, description, image: '' })
+        }
+        function saveArticle(obj) {
+            new Article(obj).save((err, article) => {
+                if (err)
+                    res.send(err)
+                else if (!article)
+                    res.send(400)
+                else {
+                    return article.addAuthor(req.body.author_id).then((_article) => {
+                        return res.send(_article)
+                    })
+                }
+                next()
+            })
+        }
+    },
 }
