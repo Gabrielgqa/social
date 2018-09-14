@@ -47,4 +47,18 @@ module.exports = {
             })
         }
     },
+
+    getOne: (req, res, next) => {
+        Article.findById(req.params.id)
+        .populate('author')
+        .populate('comments.author').exec((err, article)=> {
+            if (err)
+                res.send(err)
+            else if (!article)
+                res.send(404)
+            else
+                res.send(article)
+            next()            
+        })
+    },
 }

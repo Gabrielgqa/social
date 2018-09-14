@@ -9,4 +9,8 @@ module.exports = (router) => {
     router
         .route('/article')
         .post(multipartWare, articleController.create)
+
+    router
+        .route('/article/:id')
+        .get(articleController.getOne)
 }
