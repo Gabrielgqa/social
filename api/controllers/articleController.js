@@ -61,4 +61,12 @@ module.exports = {
             next()            
         })
     },
+
+    like: (req, res, next) => {
+        Article.findById(req.body.article_id).then((article)=> {
+            return article.like().then(()=>{
+                return res.json({msg: "OK"})
+            })
+        }).catch(next)
+    },
 }

@@ -13,4 +13,8 @@ module.exports = (router) => {
     router
         .route('/article/:id')
         .get(articleController.getOne)
+
+    router
+        .route('/article/like')
+        .post(articleController.like)
 }
