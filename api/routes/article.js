@@ -17,4 +17,8 @@ module.exports = (router) => {
     router
         .route('/article/like')
         .post(articleController.like)
+    
+    router
+        .route('/article/comment')
+        .post(articleController.comment)
 }
